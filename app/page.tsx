@@ -18,12 +18,6 @@ export default function Home() {
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     try {
-      // await axios({
-      //   method: "post",
-      //   url: "http://localhost:3000/api/auth/login",
-      //   data,
-      // });
-
       router.push("/contacts");
     } catch (error) {
       console.log(error);

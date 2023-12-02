@@ -27,7 +27,7 @@ export function ContactForm(props: any) {
       if (id) {
         await axios({
           method: "put",
-          url: `http://localhost:3000/api/contacts/${id}`,
+          url: `${process.env.NEXTAUTH_URL}/api/contacts/${id}`,
           data,
         });
 
@@ -35,10 +35,12 @@ export function ContactForm(props: any) {
       } else {
         await axios({
           method: "post",
-          url: "http://localhost:3000/api/contacts",
+          url: `${process.env.NEXTAUTH_URL}/api/contacts`,
           data,
         }).then((res) => {
-          router.push(`http://localhost:3000/contacts/${res?.data?.data?.id}`);
+          router.push(
+            `${process.env.NEXTAUTH_URL}/contacts/${res?.data?.data?.id}`
+          );
         });
       }
     } catch (error) {
