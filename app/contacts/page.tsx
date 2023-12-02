@@ -13,7 +13,7 @@ export default function Contacts() {
   const [tableData, setTableData] = useState([]);
 
   const { data, error, isLoading } = useSWR(
-    `${process.env.NEXTAUTH_URL}/api/contacts`,
+    `${process.env.NEXT_PUBLIC_NEXT_PUBLIC_NEXTAUTH_URL}/api/contacts`,
     getAll,
     {
       onSuccess: (res) => {
@@ -32,8 +32,13 @@ export default function Contacts() {
 
   const onSearch = async () => {
     const res = searchKey
-      ? await getByName(`${process.env.NEXTAUTH_URL}/api/contacts`, searchKey)
-      : await getAll(`${process.env.NEXTAUTH_URL}/api/contacts`);
+      ? await getByName(
+          `${process.env.NEXT_PUBLIC_NEXT_PUBLIC_NEXTAUTH_URL}/api/contacts`,
+          searchKey
+        )
+      : await getAll(
+          `${process.env.NEXT_PUBLIC_NEXT_PUBLIC_NEXTAUTH_URL}/api/contacts`
+        );
     setTableData(res?.data);
   };
 

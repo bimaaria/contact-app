@@ -27,7 +27,7 @@ export function ContactForm(props: any) {
       if (id) {
         await axios({
           method: "put",
-          url: `${process.env.NEXTAUTH_URL}/api/contacts/${id}`,
+          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/contacts/${id}`,
           data,
         });
 
@@ -35,11 +35,11 @@ export function ContactForm(props: any) {
       } else {
         await axios({
           method: "post",
-          url: `${process.env.NEXTAUTH_URL}/api/contacts`,
+          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/contacts`,
           data,
         }).then((res) => {
           router.push(
-            `${process.env.NEXTAUTH_URL}/contacts/${res?.data?.data?.id}`
+            `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/contacts/${res?.data?.data?.id}`
           );
         });
       }

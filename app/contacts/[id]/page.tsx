@@ -19,7 +19,10 @@ export default function ContactDetail() {
     data: record,
     error,
     isLoading,
-  } = useSWR(`${process.env.NEXTAUTH_URL}/api/contacts/${id}`, fetcher);
+  } = useSWR(
+    `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/contacts/${id}`,
+    fetcher
+  );
 
   const onEdit = () => {
     setIsFormDisabled(false);
