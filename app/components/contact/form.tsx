@@ -17,7 +17,7 @@ export function ContactForm(props: any) {
   const [isLoadingSave, setIsLoadingSave] = useState(false);
 
   const onCancel = () => {
-    setIsFormDisabled(false);
+    setIsFormDisabled(true);
   };
 
   const onSubmit = async (data: any, id: string = "") => {
