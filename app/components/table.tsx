@@ -1,14 +1,6 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Table({ contacts }: any) {
-  const router = useRouter();
-
-  const onClickName = (id: string): any => {
-    router.push(`/contacts/${id}`);
-  };
-
   return (
     <table className="border w-full">
       <thead>
@@ -28,9 +20,12 @@ export default function Table({ contacts }: any) {
               {index + 1}
             </td>
             <td className="border border-black rounded-md px-2 py-1">
-              <button onClick={() => onClickName(contact.id)}>
+              <Link
+                href={`/contacts/${contact.id}`}
+                className="underline text-blue-600"
+              >
                 {contact.name}
-              </button>
+              </Link>
             </td>
             <td className="border border-black rounded-md px-2 py-1 text-ellipsis overflow-hidden">
               {contact.phone}
