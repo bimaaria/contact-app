@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function Table({ contacts }: any) {
+export function ContactTable({ contacts }: any) {
   return (
     <table className="border w-full">
       <thead>

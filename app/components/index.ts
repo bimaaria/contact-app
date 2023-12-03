@@ -1,1 +1,2 @@
-export { ContactForm } from "./contact/form";
+export * from "./contact";
+export { Loading } from "./global/loading";
