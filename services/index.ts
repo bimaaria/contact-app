@@ -1,1 +1,1 @@
-export { getAll, getByName } from "./contacts";
+export { get, getAll, getByName } from "./contacts";
