@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import useSWR from "swr";
 import Table from "../components/table";
@@ -9,18 +9,9 @@ import { getAll, getByName } from "@/services";
 
 export default function Contacts() {
   const [isCreating, setIsCreating] = useState(false);
+  const [isFetchLoading, setIsFetchLoading] = useState(false);
   const [searchKey, setSearchKey] = useState("");
   const [tableData, setTableData] = useState([]);
-
-  const { data, error, isLoading } = useSWR(
-    `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/contacts`,
-    getAll,
-    {
-      onSuccess: (res) => {
-        setTableData(res?.data);
-      },
-    }
-  );
 
   const onCreate = () => {
     setIsCreating(true);
@@ -44,14 +35,21 @@ export default function Contacts() {
     setIsCreating(false);
   };
 
-  if (error)
-    return (
-      <div className="flex justify-center items center min-h-screen">
-        <p>Error</p>
-      </div>
-    );
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsFetchLoading(true);
+      return await getAll(
+        `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/contacts`
+      );
+    };
 
-  if (isLoading)
+    fetchData().then((res) => {
+      setTableData(res.data);
+      setIsFetchLoading(false);
+    });
+  }, []);
+
+  if (isFetchLoading)
     return (
       <div className="flex justify-center items-center min-h-screen">
         <p>Loading ...</p>
