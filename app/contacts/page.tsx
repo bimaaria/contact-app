@@ -21,7 +21,6 @@ export default function Contacts() {
   };
 
   const onSearch = async () => {
-    setIsFetchLoading(true);
     const res = searchKey
       ? await getByName(
           `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/contacts`,
@@ -29,7 +28,6 @@ export default function Contacts() {
         )
       : await getAll(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/contacts`);
     setTableData(res?.data);
-    setIsFetchLoading(false);
   };
 
   const onBack = () => {
@@ -92,7 +90,7 @@ export default function Contacts() {
         <ContactForm isCreating={isCreating} setIsCreating={setIsCreating} />
       ) : (
         <>
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center mb-4 md:justify-start md: gap-2">
             <input
               type="text"
               className="border border-black px-2 py-1"
