@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import useSWR from "swr";
 import Table from "../components/table";
 import { ContactForm } from "../components";
 import { getAll, getByName } from "@/services";
@@ -22,6 +21,7 @@ export default function Contacts() {
   };
 
   const onSearch = async () => {
+    setIsFetchLoading(true);
     const res = searchKey
       ? await getByName(
           `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/contacts`,
@@ -29,6 +29,7 @@ export default function Contacts() {
         )
       : await getAll(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/contacts`);
     setTableData(res?.data);
+    setIsFetchLoading(false);
   };
 
   const onBack = () => {
