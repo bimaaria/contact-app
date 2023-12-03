@@ -10,9 +10,9 @@ export async function GET(request: NextRequest) {
   let contacts: any = [];
   try {
     if (searchParams.has("name")) {
-      const query = `%${searchParams.get("name")}%`;
+      const query = `%${searchParams.get("name")?.toLowerCase()}%`;
       contacts =
-        await prisma.$queryRaw`SELECT * FROM contacts WHERE name LIKE ${query}`;
+        await prisma.$queryRaw`SELECT * FROM contacts WHERE lower(name) LIKE ${query}`;
     } else {
       contacts = await prisma.contact.findMany();
     }
