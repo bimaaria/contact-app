@@ -1,12 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import useSWR from "swr";
-import { ContactForm } from "@/app/components";
 import Link from "next/link";
-
-const fetcher = async (url: string) => await fetch(url).then((r) => r.json());
+import { ContactForm, Loading } from "@/app/components";
+import { get } from "@/services";
 
 export default function ContactDetail() {
   const pathname = usePathname();
@@ -14,15 +12,8 @@ export default function ContactDetail() {
   const id = pathnameArray[pathnameArray.length - 1];
 
   const [isFormDisabled, setIsFormDisabled] = useState(true);
-
-  const {
-    data: record,
-    error,
-    isLoading,
-  } = useSWR(
-    `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/contacts/${id}`,
-    fetcher
-  );
+  const [isFetchLoading, setIsFetchLoading] = useState(false);
+  const [formData, setFormData] = useState({});
 
   const onEdit = () => {
     setIsFormDisabled(false);
@@ -30,20 +21,19 @@ export default function ContactDetail() {
 
   const onDelete = () => {};
 
-  if (error) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p>Error</p>
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (id) {
+      const fetchData = async () => {
+        setIsFetchLoading(true);
+        return await get(id);
+      };
 
-  if (isLoading)
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p>Loading ...</p>
-      </div>
-    );
+      fetchData().then((res) => {
+        setFormData(res.data);
+        setIsFetchLoading(false);
+      });
+    }
+  }, [id]);
 
   return (
     <main className="min-h-screen p-12 flex flex-col">
@@ -70,11 +60,15 @@ export default function ContactDetail() {
           Delete
         </button>
       </div>
-      <ContactForm
-        data={record.data || {}}
-        isFormDisabled={isFormDisabled}
-        setIsFormDisabled={setIsFormDisabled}
-      />
+      {isFetchLoading ? (
+        <Loading size={6} />
+      ) : (
+        <ContactForm
+          data={formData || {}}
+          isFormDisabled={isFormDisabled}
+          setIsFormDisabled={setIsFormDisabled}
+        />
+      )}
     </main>
   );
 }

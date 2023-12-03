@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Table from "../components/table";
-import { ContactForm } from "../components";
+import { ContactForm, ContactTable, Loading } from "../components";
 import { getAll, getByName } from "@/services";
 
 export default function Contacts() {
   const [isCreating, setIsCreating] = useState(false);
   const [isFetchLoading, setIsFetchLoading] = useState(false);
+  const [isSearchLoading, setIsSearchLoading] = useState(false);
   const [searchKey, setSearchKey] = useState("");
   const [tableData, setTableData] = useState([]);
 
@@ -21,13 +21,10 @@ export default function Contacts() {
   };
 
   const onSearch = async () => {
-    const res = searchKey
-      ? await getByName(
-          `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/contacts`,
-          searchKey
-        )
-      : await getAll(`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/contacts`);
+    setIsSearchLoading(true);
+    const res = searchKey ? await getByName(searchKey) : await getAll();
     setTableData(res?.data);
+    setIsSearchLoading(false);
   };
 
   const onBack = () => {
@@ -37,9 +34,7 @@ export default function Contacts() {
   useEffect(() => {
     const fetchData = async () => {
       setIsFetchLoading(true);
-      return await getAll(
-        `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api/contacts`
-      );
+      return await getAll();
     };
 
     fetchData().then((res) => {
@@ -47,13 +42,6 @@ export default function Contacts() {
       setIsFetchLoading(false);
     });
   }, []);
-
-  if (isFetchLoading)
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p>Loading ...</p>
-      </div>
-    );
 
   return (
     <main className="min-h-screen p-12 flex flex-col">
@@ -100,12 +88,17 @@ export default function Contacts() {
               type="button"
               className="border border-black px-2 py-1 rounded-sm"
               onClick={onSearch}
+              disabled={isSearchLoading}
             >
-              Search
+              {isSearchLoading ? <Loading size={6} /> : "Search"}
             </button>
           </div>
 
-          <Table contacts={tableData} />
+          {isFetchLoading ? (
+            <Loading size={6} />
+          ) : (
+            <ContactTable contacts={tableData} />
+          )}
         </>
       )}
     </main>

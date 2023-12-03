@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { Loading } from "./components";
 
 export default function Home() {
   const {
@@ -53,7 +54,7 @@ export default function Home() {
             className="border border-black rounded-sm w-24 px-2 py-1"
             disabled={isLoading}
           >
-            Login
+            {isLoading ? <Loading size={6} /> : "Login"}
           </button>
         </div>
       </form>
