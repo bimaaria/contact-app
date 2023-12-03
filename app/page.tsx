@@ -54,7 +54,7 @@ export default function Home() {
             className="border border-black rounded-sm w-24 px-2 py-1"
             disabled={isLoading}
           >
-            {isLoading ? <Loading size={6} /> : "Login"}
+            {isLoading ? <Loading /> : "Login"}
           </button>
         </div>
       </form>

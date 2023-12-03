@@ -61,7 +61,7 @@ export default function ContactDetail() {
         </button>
       </div>
       {isFetchLoading ? (
-        <Loading size={6} />
+        <Loading />
       ) : (
         <ContactForm
           data={formData || {}}

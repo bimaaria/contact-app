@@ -90,15 +90,11 @@ export default function Contacts() {
               onClick={onSearch}
               disabled={isSearchLoading}
             >
-              {isSearchLoading ? <Loading size={6} /> : "Search"}
+              {isSearchLoading ? <Loading /> : "Search"}
             </button>
           </div>
 
-          {isFetchLoading ? (
-            <Loading size={6} />
-          ) : (
-            <ContactTable contacts={tableData} />
-          )}
+          {isFetchLoading ? <Loading /> : <ContactTable contacts={tableData} />}
         </>
       )}
     </main>
